@@ -35,4 +35,24 @@ public class MenuController {
     public ResponseEntity<Optional<Menu>> getMenuById(@PathVariable ObjectId menuId) {
         return new ResponseEntity<Optional<Menu>>(menuService.getMenuById(menuId), HttpStatus.OK);
     }
+
+    @GetMapping("/category/{category}")
+    public ResponseEntity<List<Menu>> getMenuByCategory(@PathVariable String category) {
+        return new ResponseEntity<List<Menu>>(menuService.getMenuByCategory(category), HttpStatus.OK);
+    }
+
+    @GetMapping("/restaurant/{restaurantId}")
+    public ResponseEntity<List<Menu>> getMenyByRestaurantId(@PathVariable ObjectId restaurantId) {
+        return new ResponseEntity<List<Menu>>(menuService.getMenyByRestaurantId(restaurantId), HttpStatus.OK);
+    }
+
+    @PutMapping("/edit/{menuId}")
+    public ResponseEntity<Menu> editMenuById(@PathVariable ObjectId menuId, @RequestBody Menu menu) {
+        return new ResponseEntity<Menu>(menuService.editMenuById(menuId, menu), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{menuId}")
+    public ResponseEntity<String> deleteMenuById(@PathVariable ObjectId menuId) {
+        return new ResponseEntity<String>(menuService.deleteMenuById(menuId), HttpStatus.OK);
+    }
 }

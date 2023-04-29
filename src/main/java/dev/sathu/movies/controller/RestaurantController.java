@@ -1,5 +1,6 @@
 package dev.sathu.movies.controller;
 
+import dev.sathu.movies.model.Menu;
 import dev.sathu.movies.model.Restaurant;
 import dev.sathu.movies.service.RestaurantService;
 import org.bson.types.ObjectId;

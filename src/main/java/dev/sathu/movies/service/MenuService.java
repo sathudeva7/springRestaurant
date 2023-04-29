@@ -27,4 +27,29 @@ public class MenuService {
         return menuRepository.findMenuById(id);
     }
 
+    public List<Menu> getMenuByCategory(String category) {
+        return menuRepository.findMenuByCategory(category);
+    }
+
+    public String deleteMenuById(ObjectId menuId) {
+        menuRepository.deleteById(menuId);
+        return "Menu Deleted";
+    }
+
+    public Menu editMenuById(ObjectId menuId, Menu menu) {
+        Menu oldMenu = menuRepository.findById(menuId).orElseThrow(() -> new Error("Menu not found with id: " ));
+
+        oldMenu.setName(menu.getName());
+        oldMenu.setDescription(menu.getDescription());
+        oldMenu.setPrice(menu.getPrice());
+        oldMenu.setCategory(menu.getCategory());
+        oldMenu.setMenuImages(menu.getMenuImages());
+        oldMenu.setAvailability(menu.getAvailability());
+
+        return menuRepository.save(oldMenu);
+    }
+
+    public List<Menu> getMenyByRestaurantId(ObjectId restaurantId) {
+        return menuRepository.findMenuByRestaurantId(restaurantId);
+    }
 }
