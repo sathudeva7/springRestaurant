@@ -13,10 +13,14 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+
+
 
 @Service
 public class UserService {
@@ -28,8 +32,10 @@ public class UserService {
     private EmailService emailService;
     @Autowired
     private UserRepository userRepository;
+//    @Autowired(required = true)
+//    private BCryptPasswordEncoder  bCryptPasswordEncoder;
 
-    public Map<String, String> createUser(String email) {
+    public Map<String, String> createUser(String email, String role) {
         User userByMail = findUserByMail(email);
         Map<String, String> response = new HashMap<>();
 
@@ -37,7 +43,7 @@ public class UserService {
             String token = TokenGenerator.generateToken();
             emailService.sendToken(email, token);
 
-            User user = userRepository.save(new User("", email,"",token));;
+            User user = userRepository.save(new User("", email,"",token,role));;
             response.put("message", "success");
             return response;
         } else {
@@ -64,8 +70,9 @@ public class UserService {
         }
     }
 
-    public Map<String, String>  updateUser(String email,String name, String phoneNumber) {
+    public Map<String, String>  updateUser(String email,String name, String phoneNumber, String password) {
         Map<String, String> response = new HashMap<>();
+        System.out.println(password);
 
         User user = mongoTemplate.findOne(Query.query(Criteria.where("email").is(email)), User.class);
 
@@ -75,12 +82,20 @@ public class UserService {
         } else {
             user.setName(name);
             user.setPhoneNumber(phoneNumber);
+            user.setPassword(password);
+            System.out.println(user);
             mongoTemplate.save(user);
 
             response.put("message", "Success");
             return response;
         }
     }
+
+//    public Map<String, String>  login(String email,String password) {
+//        Map<String, String> response = new HashMap<>();
+//
+//
+//    }
 
     public User findUserByMail(String email) {
         return userRepository.findUserByEmail(email);
@@ -89,7 +104,5 @@ public class UserService {
     public User findUserByToken(String token) {
         return userRepository.findUserByToken(token);
     }
-
-
 
 }
