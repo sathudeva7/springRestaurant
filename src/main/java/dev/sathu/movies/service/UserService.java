@@ -91,11 +91,6 @@ public class UserService {
         }
     }
 
-//    public Map<String, String>  login(String email,String password) {
-//        Map<String, String> response = new HashMap<>();
-//
-//
-//    }
 
     public User findUserByMail(String email) {
         return userRepository.findUserByEmail(email);

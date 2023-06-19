@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -21,13 +22,13 @@ public class RestaurantController {
     private RestaurantService restaurantService;
 
     @PostMapping
-    public ResponseEntity<Restaurant> createRestaurant(@RequestBody Payload payload) {
-        return new ResponseEntity<Restaurant>(restaurantService.createRestaurant( payload.getName(), payload.getAddress(), payload.isDeliveryOptions(), payload.getCusine(),payload.getPhoneNumber(),payload.getImage(),payload.getPaymentOptions() ),HttpStatus.CREATED);
+    public ResponseEntity<Map<String, Object>> createRestaurant(@RequestBody Payload payload) {
+        return new ResponseEntity<>(restaurantService.createRestaurant( payload.getName(), payload.getAddress(), payload.isDeliveryOptions(), payload.getCusine(),payload.getPhoneNumber(),payload.getImage(),payload.getPaymentOptions() ),HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<Restaurant>> getAllRestaurants() {
-        return new ResponseEntity<List<Restaurant>>(restaurantService.getAllRestaurants(), HttpStatus.OK);
+    public ResponseEntity<Map<String, Object>> getAllRestaurants() {
+        return new ResponseEntity<>(restaurantService.getAllRestaurants(), HttpStatus.OK);
     }
 
     @GetMapping("/{restaurantId}")
@@ -36,8 +37,8 @@ public class RestaurantController {
     }
 
     @GetMapping("/location/{location}")
-    public ResponseEntity<List<Restaurant>> getRestaurantByLocation(@PathVariable String location) {
-        return new ResponseEntity<List<Restaurant>>(restaurantService.getRestaurantByLocation(location), HttpStatus.OK);
+    public ResponseEntity<Map<String, Object>> getRestaurantByLocation(@PathVariable String location) {
+        return new ResponseEntity<>(restaurantService.getRestaurantByLocation(location), HttpStatus.OK);
     }
 
     @PutMapping("/{restaurantId}")
@@ -46,8 +47,8 @@ public class RestaurantController {
     }
 
     @DeleteMapping("/{restaurantId}")
-    public ResponseEntity<String> deleteRestaurantById(@PathVariable ObjectId restaurantId) {
-        return new ResponseEntity<String>(String.valueOf(restaurantService.deleteRestaurantById(restaurantId)), HttpStatus.OK);
+    public ResponseEntity<Map<String, Object>> deleteRestaurantById(@PathVariable ObjectId restaurantId) {
+        return new ResponseEntity<>(restaurantService.deleteRestaurantById(restaurantId), HttpStatus.OK);
     }
 }
 

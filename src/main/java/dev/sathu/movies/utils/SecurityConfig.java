@@ -45,14 +45,14 @@ public class SecurityConfig {
     private final JwtAuthFilter JwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
 
-    private final static List<User> APP_USERS = Arrays.asList(
-      new User("wdeva22@gmail.com", "password", Collections.singleton(new SimpleGrantedAuthority("ROLE_ADMIN"))),
-            new User("e15330@gmail.com", "password", Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")))
-    );
+//    private final static List<User> APP_USERS = Arrays.asList(
+//      new User("wdeva22@gmail.com", "password", Collections.singleton(new SimpleGrantedAuthority("ROLE_ADMIN"))),
+//            new User("e15330@gmail.com", "password", Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")))
+//    );
     private UserService userService;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http)  throws Exception {
 
         http
                 .csrf().disable()

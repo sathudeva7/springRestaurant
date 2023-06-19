@@ -35,7 +35,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         final String jwt;
         final String email;
 
-        if(authHeader == null || !authHeader.startsWith("Bearer ")) {
+        if(authHeader == null ||  authHeader.length() == 0|| !authHeader.startsWith("Bearer ")) {
+            System.out.println("ppp");
             filterChain.doFilter(request, response);
             return;
         }
