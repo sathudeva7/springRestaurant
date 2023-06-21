@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface RestaurantRepository extends MongoRepository<Restaurant, ObjectId> {
-    Optional<Restaurant> findRestaurantById(ObjectId Id);
+    Restaurant findRestaurantById(ObjectId Id);
 
     @Query(value = "{'address.country' : ?0}")
     List<Restaurant> findRestaurantByAddress(String location);

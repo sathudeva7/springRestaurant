@@ -55,8 +55,12 @@ public class RestaurantService {
         return response;
     }
 
-    public Optional<Restaurant> getRestaurantById(ObjectId id) {
-        return restaurantRepository.findRestaurantById(id);
+    public Map<String, Object> getRestaurantById(ObjectId id) {
+        Restaurant restaurant =  restaurantRepository.findRestaurantById(id);
+
+        Map<String, Object> response = CustomizedResponse.buildResponse(restaurant, "success", "Restaurant fetched by id successfully.");
+
+        return response;
     }
 
     public Map<String, Object> getRestaurantByLocation(String location) {
@@ -76,7 +80,7 @@ public class RestaurantService {
         return response;
     }
 
-    public Optional<Restaurant> changeRestaurantInfo(ObjectId id, String name, Address address, Boolean deliveryOptions, Cusine cusine, String phoneNumber, List<String> image, PaymentOptions paymentOptions) {
+    public Map<String, Object> changeRestaurantInfo(ObjectId id, String name, Address address, Boolean deliveryOptions, Cusine cusine, String phoneNumber, List<String> image, PaymentOptions paymentOptions) {
         Query query = new Query();
         query.addCriteria(Criteria.where("_id").is(id));
 
@@ -91,7 +95,11 @@ public class RestaurantService {
 
         mongoTemplate.findAndModify(query, update, Restaurant.class);
 
-        return restaurantRepository.findRestaurantById(id);
+        Restaurant updatedRestaurant = restaurantRepository.findRestaurantById(id);
+
+        Map<String, Object> response = CustomizedResponse.buildResponse(updatedRestaurant, "success", "Restaurant Edited successfully.");
+
+        return response;
     }
 
     public Map<String, Object> deleteRestaurantById(ObjectId restaurantId) {

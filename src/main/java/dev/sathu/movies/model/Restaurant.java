@@ -31,8 +31,6 @@ public class Restaurant {
     }
 
     public void setId(ObjectId id) {
-        System.out.println("sdsa");
-        System.out.println(id);
         this.id = id;
     }
 

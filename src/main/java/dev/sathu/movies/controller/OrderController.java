@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -19,12 +20,12 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<Order> createOrder(@RequestBody OrderPayload orderPayload) {
-        return new ResponseEntity<Order>(orderService.createOrder(orderPayload.getUserId(), orderPayload.getRestaurantId(), orderPayload.getAmount(), orderPayload.getMenuIds()), HttpStatus.CREATED);
+    public ResponseEntity<Map<String, Object>> createOrder(@RequestBody OrderPayload orderPayload) {
+        return new ResponseEntity<>(orderService.createOrder(orderPayload.getUserId(), orderPayload.getRestaurantId(), orderPayload.getAmount(), orderPayload.getMenuIds()), HttpStatus.CREATED);
     }
 
     @GetMapping("user/{userId}")
-    public ResponseEntity<List<Order>> getOrdersByUserId(@PathVariable ObjectId userId) {
-        return new ResponseEntity<List<Order>>(orderService.getOrdersByUserId(userId), HttpStatus.OK);
+    public ResponseEntity<Map<String, Object>> getOrdersByUserId(@PathVariable ObjectId userId) {
+        return new ResponseEntity<>(orderService.getOrdersByUserId(userId), HttpStatus.OK);
     }
 }

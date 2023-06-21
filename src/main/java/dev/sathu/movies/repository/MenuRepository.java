@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface MenuRepository extends MongoRepository<Menu, ObjectId> {
-    Optional<Menu> findMenuById(ObjectId Id);
+    Menu findMenuById(ObjectId Id);
 
     @Query(value = "{'category' : ?0}")
     List<Menu> findMenuByCategory(String category);

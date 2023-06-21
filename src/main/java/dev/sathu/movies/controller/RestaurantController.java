@@ -32,8 +32,8 @@ public class RestaurantController {
     }
 
     @GetMapping("/{restaurantId}")
-    public ResponseEntity<Optional<Restaurant>> getRestaurantById(@PathVariable ObjectId restaurantId) {
-        return new ResponseEntity<Optional<Restaurant>>(restaurantService.getRestaurantById(restaurantId), HttpStatus.OK);
+    public ResponseEntity<Map<String, Object>> getRestaurantById(@PathVariable ObjectId restaurantId) {
+        return new ResponseEntity<>(restaurantService.getRestaurantById(restaurantId), HttpStatus.OK);
     }
 
     @GetMapping("/location/{location}")
@@ -42,8 +42,8 @@ public class RestaurantController {
     }
 
     @PutMapping("/{restaurantId}")
-    public ResponseEntity<Optional> changeRestaurantInfo(@PathVariable ObjectId restaurantId, @RequestBody Payload payload) {
-        return new ResponseEntity<Optional>(restaurantService.changeRestaurantInfo(restaurantId, payload.getName(), payload.getAddress(), payload.isDeliveryOptions(), payload.getCusine(),payload.getPhoneNumber(),payload.getImage(),payload.getPaymentOptions()), HttpStatus.OK);
+    public ResponseEntity<Map<String, Object> >changeRestaurantInfo(@PathVariable ObjectId restaurantId, @RequestBody Payload payload) {
+        return new ResponseEntity<>(restaurantService.changeRestaurantInfo(restaurantId, payload.getName(), payload.getAddress(), payload.isDeliveryOptions(), payload.getCusine(),payload.getPhoneNumber(),payload.getImage(),payload.getPaymentOptions()), HttpStatus.OK);
     }
 
     @DeleteMapping("/{restaurantId}")

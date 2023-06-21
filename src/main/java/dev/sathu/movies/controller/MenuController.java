@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -22,8 +23,8 @@ public class MenuController {
     private MenuRepository menuRepository;
 
     @PostMapping
-    public ResponseEntity<Menu>  createMenu(@RequestBody Menu payload) {
-        return new ResponseEntity<Menu>(menuService.createMenu(payload), HttpStatus.CREATED);
+    public ResponseEntity<Map<String, Object>>  createMenu(@RequestBody Menu payload) {
+        return new ResponseEntity<>(menuService.createMenu(payload), HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -32,27 +33,27 @@ public class MenuController {
     }
 
     @GetMapping("/{menuId}")
-    public ResponseEntity<Optional<Menu>> getMenuById(@PathVariable ObjectId menuId) {
-        return new ResponseEntity<Optional<Menu>>(menuService.getMenuById(menuId), HttpStatus.OK);
+    public ResponseEntity<Map<String, Object>> getMenuById(@PathVariable ObjectId menuId) throws Exception {
+        return new ResponseEntity<>(menuService.getMenuById(menuId), HttpStatus.OK);
     }
 
     @GetMapping("/category/{category}")
-    public ResponseEntity<List<Menu>> getMenuByCategory(@PathVariable String category) {
-        return new ResponseEntity<List<Menu>>(menuService.getMenuByCategory(category), HttpStatus.OK);
+    public ResponseEntity<Map<String, Object>> getMenuByCategory(@PathVariable String category) {
+        return new ResponseEntity<>(menuService.getMenuByCategory(category), HttpStatus.OK);
     }
 
     @GetMapping("/restaurant/{restaurantId}")
-    public ResponseEntity<List<Menu>> getMenyByRestaurantId(@PathVariable ObjectId restaurantId) {
-        return new ResponseEntity<List<Menu>>(menuService.getMenyByRestaurantId(restaurantId), HttpStatus.OK);
+    public ResponseEntity<Map<String, Object>> getMenyByRestaurantId(@PathVariable ObjectId restaurantId) {
+        return new ResponseEntity<>(menuService.getMenyByRestaurantId(restaurantId), HttpStatus.OK);
     }
 
     @PutMapping("/edit/{menuId}")
-    public ResponseEntity<Menu> editMenuById(@PathVariable ObjectId menuId, @RequestBody Menu menu) {
-        return new ResponseEntity<Menu>(menuService.editMenuById(menuId, menu), HttpStatus.OK);
+    public ResponseEntity<Map<String, Object>> editMenuById(@PathVariable ObjectId menuId, @RequestBody Menu menu) {
+        return new ResponseEntity<>(menuService.editMenuById(menuId, menu), HttpStatus.OK);
     }
 
     @DeleteMapping("/{menuId}")
-    public ResponseEntity<String> deleteMenuById(@PathVariable ObjectId menuId) {
-        return new ResponseEntity<String>(menuService.deleteMenuById(menuId), HttpStatus.OK);
+    public ResponseEntity<Map<String, Object>> deleteMenuById(@PathVariable ObjectId menuId) {
+        return new ResponseEntity<>(menuService.deleteMenuById(menuId), HttpStatus.OK);
     }
 }
