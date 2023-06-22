@@ -18,7 +18,7 @@ public class Order {
     @DocumentReference
     private ObjectId userId;
     @DocumentReference
-    private List<Menu> menuIds;
+    private List<ObjectId> menuIds;
     @DocumentReference
     private ObjectId restaurantId;
     private Boolean delivered;
@@ -29,7 +29,7 @@ public class Order {
     }
 
 
-    public Order(ObjectId userId, ObjectId restaurantId, double amount, List<Menu> menuIds) {
+    public Order(ObjectId userId, ObjectId restaurantId, double amount, List<ObjectId> menuIds) {
         this.userId = userId;
         this.restaurantId = restaurantId;
         this.amount = amount;

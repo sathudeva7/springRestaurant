@@ -31,33 +31,38 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
-        final String authHeader = request.getHeader("Authorization");
-        final String jwt;
-        final String email;
+        try {
+            final String authHeader = request.getHeader("Authorization");
+            final String jwt;
+            final String email;
 
-        if(authHeader == null ||  authHeader.length() == 0|| !authHeader.startsWith("Bearer ")) {
-            System.out.println("ppp");
-            filterChain.doFilter(request, response);
-            return;
-        }
-        jwt = authHeader.substring(7);
-        System.out.println("jwt+++"+jwt);
-        email = jwtService.extractEmail(jwt);
-
-        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
-          UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-
-            if (jwtService.validateToken(jwt, userDetails)) {
-
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-                usernamePasswordAuthenticationToken
-                        .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            if (authHeader == null || authHeader.length() == 0 || !authHeader.startsWith("Bearer ")) {
+                System.out.println("ppp");
+                filterChain.doFilter(request, response);
             }
+            jwt = authHeader.substring(7);
+            System.out.println("jwt+++" + jwt);
+            email = jwtService.extractEmail(jwt);
+
+            if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+
+                UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+
+                if (jwtService.validateToken(jwt, userDetails)) {
+
+                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    usernamePasswordAuthenticationToken
+                            .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                }
+            }
+            filterChain.doFilter(request, response);
+        } catch (Exception e) {
+            System.out.println("Login error");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Unauthorized");
         }
-        filterChain.doFilter(request, response);
 
     }
 }

@@ -2,6 +2,7 @@ package dev.sathu.movies.controller;
 
 import dev.sathu.movies.model.Order;
 import dev.sathu.movies.service.OrderService;
+import jakarta.validation.Valid;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,12 +21,22 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<Map<String, Object>> createOrder(@RequestBody OrderPayload orderPayload) {
+    public ResponseEntity<Map<String, Object>> createOrder(@Valid @RequestBody OrderPayload orderPayload) {
         return new ResponseEntity<>(orderService.createOrder(orderPayload.getUserId(), orderPayload.getRestaurantId(), orderPayload.getAmount(), orderPayload.getMenuIds()), HttpStatus.CREATED);
     }
 
     @GetMapping("user/{userId}")
     public ResponseEntity<Map<String, Object>> getOrdersByUserId(@PathVariable ObjectId userId) {
         return new ResponseEntity<>(orderService.getOrdersByUserId(userId), HttpStatus.OK);
+    }
+
+    @GetMapping("/user/completed/{userId}")
+    public ResponseEntity<Map<String, Object>> getCompletedOrdersByUserId(@PathVariable ObjectId userId) {
+        return new ResponseEntity<>(orderService.getCompletedOrdersByUserId(userId), HttpStatus.OK);
+    }
+
+    @GetMapping("/user/pending/{userId}")
+    public ResponseEntity<Map<String, Object>> getPendingOrdersByUserId(@PathVariable ObjectId userId) {
+        return new ResponseEntity<>(orderService.getPendingOrdersByUserId(userId), HttpStatus.OK);
     }
 }
