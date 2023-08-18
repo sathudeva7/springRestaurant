@@ -39,6 +39,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             if (authHeader == null || authHeader.length() == 0 || !authHeader.startsWith("Bearer ")) {
                 System.out.println("ppp");
                 filterChain.doFilter(request, response);
+                return;
             }
             jwt = authHeader.substring(7);
             System.out.println("jwt+++" + jwt);
@@ -59,7 +60,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             }
             filterChain.doFilter(request, response);
         } catch (Exception e) {
-            System.out.println("Login error");
+            System.out.println("Login error"+ e);
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Unauthorized");
         }

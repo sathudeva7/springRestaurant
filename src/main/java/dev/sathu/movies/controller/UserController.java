@@ -62,22 +62,23 @@ public class UserController {
         }
             String email = request.getEmail();
             final User user = (User) userDetailsService.loadUserByUsername(email);
-            System.out.println(user);
 
             if (user != null) {
                 Map<String, Object> data = new HashMap<>();
                 data.put("token", jwtService.generateToken(user));
-                data.put("user", user);
-
+                data.put("data", user);
+                data.put("message", "User login successfully");
+                data.put("status", "success");
                 return ResponseEntity.ok(data);
             }
         Map<String, Object> data = new HashMap<>();
         data.put("token", "");
-        data.put("user", "No user");
+        data.put("data", "");
+        data.put("message", "User login failed");
+        data.put("status", "failed");
 
         return ResponseEntity.status(400).body(data);
     }
-
 
 
 }

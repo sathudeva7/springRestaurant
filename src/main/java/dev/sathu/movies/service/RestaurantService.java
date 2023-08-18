@@ -38,22 +38,30 @@ public class RestaurantService {
     }
 
     public Map<String, Object> getAllRestaurants() {
-        List<Restaurant> restaurants = restaurantRepository.findAll();
+        try {
+            List<Restaurant> restaurants = restaurantRepository.findAll();
+            List<Map<String, Object>> simplifiedRestaurants = restaurants.stream()
+                    .map(r -> {
+                        Map<String, Object> simplifiedRestaurant = new HashMap<>();
+                        simplifiedRestaurant.put("name", r.getName());
+                        simplifiedRestaurant.put("images", r.getImages());
+                        simplifiedRestaurant.put("id", r.getId());
+                        return simplifiedRestaurant;
+                    })
+                    .collect(Collectors.toList());
 
-        List<Map<String, Object>> simplifiedRestaurants = restaurants.stream()
-                .map(r -> {
-                    Map<String, Object> simplifiedRestaurant = new HashMap<>();
-                    simplifiedRestaurant.put("name", r.getName());
-                    simplifiedRestaurant.put("images", r.getImages());
-                    simplifiedRestaurant.put("id", r.getId());
-                    return simplifiedRestaurant;
-                })
-                .collect(Collectors.toList());
+            Map<String, Object> response = CustomizedResponse.buildResponse(simplifiedRestaurants, "success", "All Restaurants fetched successfully.");
 
-        Map<String, Object> response = CustomizedResponse.buildResponse(simplifiedRestaurants, "success", "All Restaurants fetched successfully.");
+            return response;
+        } catch (Exception e) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("status", "error");
+            errorResponse.put("message", "An error occurred while fetching restaurants.");
 
-        return response;
+            return errorResponse;
+        }
     }
+
 
     public Map<String, Object> getRestaurantById(ObjectId id) {
         Restaurant restaurant =  restaurantRepository.findRestaurantById(id);

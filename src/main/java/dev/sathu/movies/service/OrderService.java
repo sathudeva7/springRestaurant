@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,11 +35,19 @@ public class OrderService {
     }
 
     public Map<String, Object> getOrdersByUserId(ObjectId userId) {
-        List<Order> ordersByUser = orderRepository.findOrdersByUserId(userId);
+        try {
+            List<Order> ordersByUser = orderRepository.findOrdersByUserId(userId);
 
-        Map<String, Object> response = CustomizedResponse.buildResponse(ordersByUser, "success", "Orders fetched by user successfully.");
+            Map<String, Object> response = CustomizedResponse.buildResponse(ordersByUser, "success", "Orders fetched by user successfully.");
 
-        return response;
+            return response;
+        } catch (Exception e) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("status", "error");
+            errorResponse.put("message", "An error occurred while fetching orders.");
+
+            return errorResponse;
+        }
     }
 
     public Map<String, Object> getCompletedOrdersByUserId(ObjectId userId) {

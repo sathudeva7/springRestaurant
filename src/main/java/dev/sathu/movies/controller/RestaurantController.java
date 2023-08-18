@@ -1,21 +1,17 @@
 package dev.sathu.movies.controller;
 
-import dev.sathu.movies.model.Menu;
-import dev.sathu.movies.model.Restaurant;
 import dev.sathu.movies.service.RestaurantService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Collections;
-import java.util.List;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/restaurant")
+@CrossOrigin(origins = "http://localhost:3000")
 public class RestaurantController {
 
     @Autowired
