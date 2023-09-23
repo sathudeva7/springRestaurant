@@ -3,11 +3,18 @@ package dev.sathu.movies.controller;
 import dev.sathu.movies.model.Address;
 import dev.sathu.movies.model.Cusine;
 import dev.sathu.movies.model.PaymentOptions;
+import org.bson.types.ObjectId;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 
 public class Payload {
     private String name;
+
+    private String userId;
+
     private Address address;
     private boolean deliveryOptions;
     private Cusine cusine;
@@ -27,8 +34,16 @@ public class Payload {
         this.image = image;
     }
 
+    public Payload() {
+
+    }
+
     public String getName() {
         return name;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     public Address getAddress() {

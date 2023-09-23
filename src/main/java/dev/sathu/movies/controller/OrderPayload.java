@@ -1,6 +1,7 @@
 package dev.sathu.movies.controller;
 
 import dev.sathu.movies.model.Menu;
+import dev.sathu.movies.model.OrderItem;
 import jakarta.validation.constraints.DecimalMin;
 
 import jakarta.validation.constraints.NotBlank;
@@ -19,6 +20,8 @@ public class OrderPayload {
     @DecimalMin(value = "0.0", inclusive = false, message = "Amount must be greater than zero")
     private double amount;
 
+    private  List<OrderItem> orderItems;
+
     public OrderPayload(ObjectId userId, ObjectId restaurantId, List<ObjectId> menuIds, double amount) {
         this.userId = userId;
         this.restaurantId = restaurantId;
@@ -26,6 +29,9 @@ public class OrderPayload {
         this.amount = amount;
     }
 
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
     public ObjectId getUserId() {
         return userId;
     }

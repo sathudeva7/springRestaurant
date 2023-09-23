@@ -4,6 +4,7 @@ import dev.sathu.movies.model.User;
 import dev.sathu.movies.service.UserService;
 import dev.sathu.movies.utils.BadRequestException;
 import dev.sathu.movies.utils.JWTService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/user")
 public class UserController {
 
@@ -48,6 +49,11 @@ public class UserController {
     @PutMapping("/updateProfile")
     public ResponseEntity<Map<String, String>> updateUser(@RequestBody Map<String, String> payload) {
         return new ResponseEntity<Map<String, String>>(userService.updateUser(payload.get("email"), payload.get("name"), payload.get("phoneNumber"),payload.get("password")), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/profile/{userId}")
+    public ResponseEntity<Map<String,Object>> getUserById(@PathVariable ObjectId userId) throws Exception{
+        return new ResponseEntity<Map<String,Object>>(userService.getUserById(userId), HttpStatus.OK);
     }
 
     @PostMapping("/login")

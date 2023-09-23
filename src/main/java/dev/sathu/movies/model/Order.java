@@ -5,8 +5,9 @@ import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Document(collection = "order")
@@ -15,25 +16,32 @@ import java.util.List;
 public class Order {
     @Id
     private ObjectId id;
-    @DocumentReference
     private ObjectId userId;
-    @DocumentReference
-    private List<ObjectId> menuIds;
-    @DocumentReference
-    private ObjectId restaurantId;
+    private List<OrderItem> orderItems;
     private Boolean delivered;
     private double amount;
 
-    public Order(  ) {
+    private Date createdAt;
 
+    public Order() {
+        this.orderItems = new ArrayList<>();
+        this.delivered = false;
     }
 
-
-    public Order(ObjectId userId, ObjectId restaurantId, double amount, List<ObjectId> menuIds) {
+    public Order(ObjectId userId, double amount, Date createdAt) {
+        this();
         this.userId = userId;
-        this.restaurantId = restaurantId;
         this.amount = amount;
-        this.menuIds = menuIds;
-        delivered = false;
+        this.createdAt = createdAt;
     }
+
+    public void addOrderItem(OrderItem orderItem) {
+        this.orderItems.add(orderItem);
+    }
+
+    public void addOrderItems(List<OrderItem> orderItems) {
+        this.orderItems.addAll(orderItems);
+    }
+
+    // Other getter and setter methods
 }

@@ -1,6 +1,5 @@
 package dev.sathu.movies.model;
 
-import dev.sathu.movies.Review;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.bson.types.ObjectId;
@@ -16,6 +15,8 @@ import java.util.List;
 public class Restaurant {
     @Id
     private ObjectId id;
+
+    private String userId;
     private String name;
     private Address address;
     private Boolean deliveryOptions;
@@ -34,10 +35,11 @@ public class Restaurant {
         this.id = id;
     }
 
-    public Restaurant(String name, Address address, Boolean deliveryOptions, Cusine cusine, String phoneNumber, List<String> image, PaymentOptions  paymentOptions) {
+    public Restaurant(String userId, String name, Address address, Boolean deliveryOptions, Cusine cusine, String phoneNumber, List<String> image, PaymentOptions  paymentOptions) {
+        this.userId = userId;
         this.name = name;
         this.address = address;
-        this.deliveryOptions = deliveryOptions;
+        this.deliveryOptions = false;
         this.cusine = cusine;
         this.phoneNumber = phoneNumber;
         this.images = image;

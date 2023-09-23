@@ -2,6 +2,7 @@ package dev.sathu.movies.repository;
 
 import dev.sathu.movies.model.Restaurant;
 import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -15,5 +16,9 @@ public interface RestaurantRepository extends MongoRepository<Restaurant, Object
 
     @Query(value = "{'address.country' : ?0}")
     List<Restaurant> findRestaurantByAddress(String location);
+
+    @Query(value = "{'userId': ?0}")
+    List<Restaurant> findRestaurantByUserId(String userId);
+
 
 }

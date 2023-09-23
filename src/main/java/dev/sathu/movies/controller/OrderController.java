@@ -1,6 +1,7 @@
 package dev.sathu.movies.controller;
 
 import dev.sathu.movies.model.Order;
+import dev.sathu.movies.model.OrderItem;
 import dev.sathu.movies.service.OrderService;
 import jakarta.validation.Valid;
 import org.bson.types.ObjectId;
@@ -14,6 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("api/v1/order")
 public class OrderController {
 
@@ -21,8 +23,8 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<Map<String, Object>> createOrder(@Valid @RequestBody OrderPayload orderPayload) {
-        return new ResponseEntity<>(orderService.createOrder(orderPayload.getUserId(), orderPayload.getRestaurantId(), orderPayload.getAmount(), orderPayload.getMenuIds()), HttpStatus.CREATED);
+        public ResponseEntity<Map<String, Object>> createOrder(@RequestBody OrderPayload payload) {
+        return new ResponseEntity<>(orderService.createOrder(payload.getUserId(), payload.getAmount(), payload.getOrderItems()), HttpStatus.CREATED);
     }
 
     @GetMapping("user/{userId}")
@@ -38,5 +40,10 @@ public class OrderController {
     @GetMapping("/user/pending/{userId}")
     public ResponseEntity<Map<String, Object>> getPendingOrdersByUserId(@PathVariable ObjectId userId) {
         return new ResponseEntity<>(orderService.getPendingOrdersByUserId(userId), HttpStatus.OK);
+    }
+
+    @GetMapping("restaurant/{restaurantId}")
+    public ResponseEntity<Map<String, Object>> getOrdersByRestaurantId(@PathVariable ObjectId restaurantId) {
+        return new ResponseEntity<>(orderService.getOrdersByRestaurantId(restaurantId), HttpStatus.OK);
     }
 }

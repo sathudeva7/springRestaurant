@@ -13,11 +13,11 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,8 +29,14 @@ public class RestaurantService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    public Map<String, Object> createRestaurant(String name, Address address, Boolean deliveryOptions, Cusine cusine, String phoneNumber, List<String> image, PaymentOptions paymentOptions ) {
-        Restaurant restaurant = restaurantRepository.insert(new Restaurant(name,address,deliveryOptions,cusine,phoneNumber,image,paymentOptions));
+    @Autowired
+    private StorageService storageService;
+
+    public Map<String, Object> createRestaurant(String userId, String name, Address address, Boolean deliveryOptions, Cusine cusine, String phoneNumber,  List<String> image, PaymentOptions paymentOptions ) {
+
+
+
+        Restaurant restaurant = restaurantRepository.insert(new Restaurant(userId,name,address,deliveryOptions,cusine,phoneNumber,image,paymentOptions));
 
         Map<String, Object> response = CustomizedResponse.buildResponse(restaurant, "success", "Restaurant created successfully.");
 
@@ -55,6 +61,25 @@ public class RestaurantService {
             return response;
         } catch (Exception e) {
             Map<String, Object> errorResponse = new HashMap<>();
+            System.out.println(e);
+            errorResponse.put("status", "error");
+            errorResponse.put("message", "An error occurred while fetching restaurants.");
+
+            return errorResponse;
+        }
+    }
+
+    public Map<String, Object> getRestaurantByUserId(String userId) {
+        try {
+            System.out.println("userId" + userId);
+            List<Restaurant> restaurants = restaurantRepository.findRestaurantByUserId(userId);
+
+            Map<String, Object> response = CustomizedResponse.buildResponse(restaurants, "success", "Restaurant fetched by id successfully.");
+
+            return response;
+        } catch (Exception e) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            System.out.println(e);
             errorResponse.put("status", "error");
             errorResponse.put("message", "An error occurred while fetching restaurants.");
 
@@ -88,7 +113,7 @@ public class RestaurantService {
         return response;
     }
 
-    public Map<String, Object> changeRestaurantInfo(ObjectId id, String name, Address address, Boolean deliveryOptions, Cusine cusine, String phoneNumber, List<String> image, PaymentOptions paymentOptions) {
+    public Map<String, Object> changeRestaurantInfo(ObjectId id, String name, Address address, Boolean deliveryOptions, Cusine cusine, String phoneNumber,  List<String> image, PaymentOptions paymentOptions) {
         Query query = new Query();
         query.addCriteria(Criteria.where("_id").is(id));
 

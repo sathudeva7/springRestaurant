@@ -5,8 +5,10 @@ import dev.sathu.movies.model.Address;
 import dev.sathu.movies.model.Menu;
 import dev.sathu.movies.model.User;
 import dev.sathu.movies.repository.UserRepository;
+import dev.sathu.movies.utils.CustomizedResponse;
 import dev.sathu.movies.utils.EmailService;
 import dev.sathu.movies.utils.TokenGenerator;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -95,6 +97,15 @@ public class UserService {
     public User findUserByMail(String email) {
         return userRepository.findUserByEmail(email);
     }
+
+    public Map<String, Object> getUserById(ObjectId id) {
+        User user =  userRepository.findUserById(id);
+
+        Map<String, Object> response = CustomizedResponse.buildResponse(user, "success", "User fetched by id successfully.");
+
+        return response;
+    }
+
 
     public User findUserByToken(String token) {
         return userRepository.findUserByToken(token);
